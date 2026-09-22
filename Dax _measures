@@ -1,0 +1,420 @@
+DEFINE
+
+MEASURE 'Coffee_Sales'[Total Revenue] =
+    SUM('Coffee_Sales'[money])
+
+MEASURE 'Coffee_Sales'[Total Transactions] =
+    COUNTROWS('Coffee_Sales')
+
+MEASURE 'Coffee_Sales'[Average Transaction Value] =
+    DIVIDE(
+        [Total Revenue],
+        [Total Transactions],
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Average Sales Per Day] =
+    DIVIDE(
+        [Total Revenue],
+        DISTINCTCOUNT('Coffee_Sales'[Date]),
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Unique Sales Days] =
+    DISTINCTCOUNT('Coffee_Sales'[Date])
+
+MEASURE 'Coffee_Sales'[Unique Coffee Products] =
+    DISTINCTCOUNT('Coffee_Sales'[coffee_name])
+
+MEASURE 'Coffee_Sales'[Unique Payment Methods] =
+    DISTINCTCOUNT('Coffee_Sales'[cash_type])
+
+MEASURE 'Coffee_Sales'[Unique Sales Hours] =
+    DISTINCTCOUNT('Coffee_Sales'[hour_of_day])
+
+MEASURE 'Coffee_Sales'[Average Hourly Sales] =
+    DIVIDE(
+        [Total Revenue],
+        [Unique Sales Hours],
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Average Transactions Per Day] =
+    DIVIDE(
+        [Total Transactions],
+        [Unique Sales Days],
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Average Product Price] =
+    AVERAGE('Coffee_Sales'[money])
+
+MEASURE 'Coffee_Sales'[Maximum Transaction Value] =
+    MAX('Coffee_Sales'[money])
+
+MEASURE 'Coffee_Sales'[Minimum Transaction Value] =
+    MIN('Coffee_Sales'[money])
+
+MEASURE 'Coffee_Sales'[Total Coffee Revenue] =
+    CALCULATE(
+        [Total Revenue],
+        'Coffee_Sales'[coffee_name] <> BLANK()
+    )
+
+MEASURE 'Coffee_Sales'[Coffee Sales %] =
+    DIVIDE(
+        [Total Revenue],
+        CALCULATE(
+            [Total Revenue],
+            ALL('Coffee_Sales'[coffee_name])
+        ),
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Transaction %] =
+    DIVIDE(
+        [Total Transactions],
+        CALCULATE(
+            [Total Transactions],
+            ALL('Coffee_Sales'[coffee_name])
+        ),
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Revenue by Payment Method %] =
+    DIVIDE(
+        [Total Revenue],
+        CALCULATE(
+            [Total Revenue],
+            ALL('Coffee_Sales'[cash_type])
+        ),
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Revenue by Time of Day %] =
+    DIVIDE(
+        [Total Revenue],
+        CALCULATE(
+            [Total Revenue],
+            ALL('Coffee_Sales'[Time_of_Day])
+        ),
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Revenue by Weekday %] =
+    DIVIDE(
+        [Total Revenue],
+        CALCULATE(
+            [Total Revenue],
+            ALL('Coffee_Sales'[Weekday])
+        ),
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Revenue by Month %] =
+    DIVIDE(
+        [Total Revenue],
+        CALCULATE(
+            [Total Revenue],
+            ALL('Coffee_Sales'[Month_name])
+        ),
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Morning Revenue] =
+    CALCULATE(
+        [Total Revenue],
+        'Coffee_Sales'[Time_of_Day] = "Morning"
+    )
+
+MEASURE 'Coffee_Sales'[Afternoon Revenue] =
+    CALCULATE(
+        [Total Revenue],
+        'Coffee_Sales'[Time_of_Day] = "Afternoon"
+    )
+
+MEASURE 'Coffee_Sales'[Night Revenue] =
+    CALCULATE(
+        [Total Revenue],
+        'Coffee_Sales'[Time_of_Day] = "Night"
+    )
+
+MEASURE 'Coffee_Sales'[Morning Transactions] =
+    CALCULATE(
+        [Total Transactions],
+        'Coffee_Sales'[Time_of_Day] = "Morning"
+    )
+
+MEASURE 'Coffee_Sales'[Afternoon Transactions] =
+    CALCULATE(
+        [Total Transactions],
+        'Coffee_Sales'[Time_of_Day] = "Afternoon"
+    )
+
+MEASURE 'Coffee_Sales'[Night Transactions] =
+    CALCULATE(
+        [Total Transactions],
+        'Coffee_Sales'[Time_of_Day] = "Night"
+    )
+
+MEASURE 'Coffee_Sales'[Morning Revenue %] =
+    DIVIDE(
+        [Morning Revenue],
+        [Total Revenue],
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Afternoon Revenue %] =
+    DIVIDE(
+        [Afternoon Revenue],
+        [Total Revenue],
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Night Revenue %] =
+    DIVIDE(
+        [Night Revenue],
+        [Total Revenue],
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Morning Transaction %] =
+    DIVIDE(
+        [Morning Transactions],
+        [Total Transactions],
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Afternoon Transaction %] =
+    DIVIDE(
+        [Afternoon Transactions],
+        [Total Transactions],
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Night Transaction %] =
+    DIVIDE(
+        [Night Transactions],
+        [Total Transactions],
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Card Revenue] =
+    CALCULATE(
+        [Total Revenue],
+        'Coffee_Sales'[cash_type] = "card"
+    )
+
+MEASURE 'Coffee_Sales'[Cash Revenue] =
+    CALCULATE(
+        [Total Revenue],
+        'Coffee_Sales'[cash_type] = "cash"
+    )
+
+MEASURE 'Coffee_Sales'[Card Transactions] =
+    CALCULATE(
+        [Total Transactions],
+        'Coffee_Sales'[cash_type] = "card"
+    )
+
+MEASURE 'Coffee_Sales'[Cash Transactions] =
+    CALCULATE(
+        [Total Transactions],
+        'Coffee_Sales'[cash_type] = "cash"
+    )
+
+MEASURE 'Coffee_Sales'[Card Payment %] =
+    DIVIDE(
+        [Card Transactions],
+        [Total Transactions],
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Cash Payment %] =
+    DIVIDE(
+        [Cash Transactions],
+        [Total Transactions],
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Revenue per Transaction] =
+    DIVIDE(
+        [Total Revenue],
+        [Total Transactions],
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Revenue per Product] =
+    DIVIDE(
+        [Total Revenue],
+        [Unique Coffee Products],
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Revenue per Sales Day] =
+    DIVIDE(
+        [Total Revenue],
+        [Unique Sales Days],
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Transactions per Sales Day] =
+    DIVIDE(
+        [Total Transactions],
+        [Unique Sales Days],
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Peak Hour Revenue] =
+    MAXX(
+        VALUES('Coffee_Sales'[hour_of_day]),
+        [Total Revenue]
+    )
+
+MEASURE 'Coffee_Sales'[Peak Hour Transactions] =
+    MAXX(
+        VALUES('Coffee_Sales'[hour_of_day]),
+        [Total Transactions]
+    )
+
+MEASURE 'Coffee_Sales'[Best Product Revenue] =
+    MAXX(
+        VALUES('Coffee_Sales'[coffee_name]),
+        [Total Revenue]
+    )
+
+MEASURE 'Coffee_Sales'[Best Product Transactions] =
+    MAXX(
+        VALUES('Coffee_Sales'[coffee_name]),
+        [Total Transactions]
+    )
+
+MEASURE 'Coffee_Sales'[Best Day Revenue] =
+    MAXX(
+        VALUES('Coffee_Sales'[Weekday]),
+        [Total Revenue]
+    )
+
+MEASURE 'Coffee_Sales'[Best Month Revenue] =
+    MAXX(
+        VALUES('Coffee_Sales'[Month_name]),
+        [Total Revenue]
+    )
+
+MEASURE 'Coffee_Sales'[Best Time of Day Revenue] =
+    MAXX(
+        VALUES('Coffee_Sales'[Time_of_Day]),
+        [Total Revenue]
+    )
+
+MEASURE 'Coffee_Sales'[Sales Growth] =
+    VAR CurrentRevenue = [Total Revenue]
+    VAR PreviousRevenue =
+        CALCULATE(
+            [Total Revenue],
+            DATEADD('Coffee_Sales'[Date], -1, MONTH)
+        )
+    RETURN
+        DIVIDE(
+            CurrentRevenue - PreviousRevenue,
+            PreviousRevenue,
+            0
+        )
+
+MEASURE 'Coffee_Sales'[Revenue Running Total] =
+    CALCULATE(
+        [Total Revenue],
+        FILTER(
+            ALLSELECTED('Coffee_Sales'[Date]),
+            'Coffee_Sales'[Date]
+                <= MAX('Coffee_Sales'[Date])
+        )
+    )
+
+MEASURE 'Coffee_Sales'[Transactions Running Total] =
+    CALCULATE(
+        [Total Transactions],
+        FILTER(
+            ALLSELECTED('Coffee_Sales'[Date]),
+            'Coffee_Sales'[Date]
+                <= MAX('Coffee_Sales'[Date])
+        )
+    )
+
+MEASURE 'Coffee_Sales'[Revenue % of Total] =
+    DIVIDE(
+        [Total Revenue],
+        CALCULATE(
+            [Total Revenue],
+            ALLSELECTED('Coffee_Sales')
+        ),
+        0
+    )
+
+MEASURE 'Coffee_Sales'[Transactions % of Total] =
+    DIVIDE(
+        [Total Transactions],
+        CALCULATE(
+            [Total Transactions],
+            ALLSELECTED('Coffee_Sales')
+        ),
+        0
+    )
+
+EVALUATE
+SUMMARIZECOLUMNS(
+    "Total Revenue", [Total Revenue],
+    "Total Transactions", [Total Transactions],
+    "Average Transaction Value", [Average Transaction Value],
+    "Average Sales Per Day", [Average Sales Per Day],
+    "Unique Sales Days", [Unique Sales Days],
+    "Unique Coffee Products", [Unique Coffee Products],
+    "Unique Payment Methods", [Unique Payment Methods],
+    "Unique Sales Hours", [Unique Sales Hours],
+    "Average Hourly Sales", [Average Hourly Sales],
+    "Average Transactions Per Day", [Average Transactions Per Day],
+    "Average Product Price", [Average Product Price],
+    "Maximum Transaction Value", [Maximum Transaction Value],
+    "Minimum Transaction Value", [Minimum Transaction Value],
+    "Total Coffee Revenue", [Total Coffee Revenue],
+    "Coffee Sales %", [Coffee Sales %],
+    "Transaction %", [Transaction %],
+    "Revenue by Payment Method %", [Revenue by Payment Method %],
+    "Revenue by Time of Day %", [Revenue by Time of Day %],
+    "Revenue by Weekday %", [Revenue by Weekday %],
+    "Revenue by Month %", [Revenue by Month %],
+    "Morning Revenue", [Morning Revenue],
+    "Afternoon Revenue", [Afternoon Revenue],
+    "Night Revenue", [Night Revenue],
+    "Morning Transactions", [Morning Transactions],
+    "Afternoon Transactions", [Afternoon Transactions],
+    "Night Transactions", [Night Transactions],
+    "Morning Revenue %", [Morning Revenue %],
+    "Afternoon Revenue %", [Afternoon Revenue %],
+    "Night Revenue %", [Night Revenue %],
+    "Morning Transaction %", [Morning Transaction %],
+    "Afternoon Transaction %", [Afternoon Transaction %],
+    "Night Transaction %", [Night Transaction %],
+    "Card Revenue", [Card Revenue],
+    "Cash Revenue", [Cash Revenue],
+    "Card Transactions", [Card Transactions],
+    "Cash Transactions", [Cash Transactions],
+    "Card Payment %", [Card Payment %],
+    "Cash Payment %", [Cash Payment %],
+    "Revenue per Transaction", [Revenue per Transaction],
+    "Revenue per Product", [Revenue per Product],
+    "Revenue per Sales Day", [Revenue per Sales Day],
+    "Transactions per Sales Day", [Transactions per Sales Day],
+    "Peak Hour Revenue", [Peak Hour Revenue],
+    "Peak Hour Transactions", [Peak Hour Transactions],
+    "Best Product Revenue", [Best Product Revenue],
+    "Best Product Transactions", [Best Product Transactions],
+    "Best Day Revenue", [Best Day Revenue],
+    "Best Month Revenue", [Best Month Revenue],
+    "Best Time of Day Revenue", [Best Time of Day Revenue],
+    "Sales Growth", [Sales Growth],
+    "Revenue Running Total", [Revenue Running Total],
+    "Transactions Running Total", [Transactions Running Total],
+    "Revenue % of Total", [Revenue % of Total],
+    "Transactions % of Total", [Transactions % of Total]
+)
